@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.Dimension;
-
+import controleur.Controle;
 /**
  * Frame du choix du joueur
  * @author emds
@@ -19,7 +19,7 @@ import java.awt.Dimension;
 public class ChoixJoueur extends JFrame {
 
 	/**
-	 * Panel général
+	 * Panel gï¿½nï¿½ral
 	 */
 	private JPanel contentPane;
 	/**
@@ -28,14 +28,14 @@ public class ChoixJoueur extends JFrame {
 	private JTextField txtPseudo;
 
 	/**
-	 * Clic sur la flèche "précédent" pour afficher le personnage précédent
+	 * Clic sur la flï¿½che "prï¿½cï¿½dent" pour afficher le personnage prï¿½cï¿½dent
 	 */
 	private void lblPrecedent_clic() {
 		System.out.println("Clic sur precedent");
 	}
 	
 	/**
-	 * Clic sur la flèche "suivant" pour afficher le personnage suivant
+	 * Clic sur la flï¿½che "suivant" pour afficher le personnage suivant
 	 */
 	private void lblSuivant_clic() {
 		System.out.println("Clic sur suivant");
@@ -45,15 +45,15 @@ public class ChoixJoueur extends JFrame {
 	 * Clic sur GO pour envoyer les informations
 	 */
 	private void lblGo_clic() {
-		(new Arene()).setVisible(true);
+		(new Arene(controle)).setVisible(true);
 		this.dispose();
 	}
 
-
+	private Controle controle;
 	/**
 	 * Create the frame.
 	 */
-	public ChoixJoueur() {
+	public ChoixJoueur(Controle controle) {
 		// Dimension de la frame en fonction de son contenu
 		this.getContentPane().setPreferredSize(new Dimension(400, 275));
 	    this.pack();
@@ -111,7 +111,7 @@ public class ChoixJoueur extends JFrame {
 		
 		// positionnement sur la zone de saisie
 		txtPseudo.requestFocus();
-
+		this.controle = controle;
 	}
 
 }

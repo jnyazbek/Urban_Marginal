@@ -10,16 +10,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
+import controleur.Controle;
 /**
- * frame de l'arène du jeu
+ * frame de l'arï¿½ne du jeu
  * @author emds
  *
  */
 public class Arene extends JFrame {
 
 	/**
-	 * Panel général
+	 * Panel gï¿½nï¿½ral
 	 */
 	private JPanel contentPane;
 	/**
@@ -30,11 +30,12 @@ public class Arene extends JFrame {
 	 * Zone d'affichage du t'chat
 	 */
 	private JTextArea txtChat ;
-
+	
+	private Controle controle;
 	/**
 	 * Create the frame.
 	 */
-	public Arene() {
+	public Arene(Controle controle) {
 		// Dimension de la frame en fonction de son contenu
 		this.getContentPane().setPreferredSize(new Dimension(800, 600 + 25 + 140));
 	    this.pack();
@@ -66,7 +67,7 @@ public class Arene extends JFrame {
 		lblFond.setIcon(new ImageIcon(resource));		
 		lblFond.setBounds(0, 0, 800, 600);
 		contentPane.add(lblFond);
-		
+		this.controle = controle;
 	}
 
 }

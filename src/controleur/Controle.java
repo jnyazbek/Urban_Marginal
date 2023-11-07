@@ -1,30 +1,81 @@
 package controleur;
 
+import vue.Arene;
+import vue.ChoixJoueur;
 import vue.EntreeJeu;
+import outils.connexion.*;
 
-/**
- * Contrôleur et point d'entrée de l'applicaton 
+/*
+ * Contrï¿½leur et point d'entrï¿½e de l'applicaton
+ * 
  * @author emds
  *
  */
-public class Controle {
+public class Controle implements AsyncResponse {
 
-	private EntreeJeu frmEntreeJeu ;
+	private EntreeJeu frmEntreeJeu;
+	private Arene frmArene;
+	private ChoixJoueur frmChoixJoueur;
+	private String typeJeu;
+	public static final int Port = 6666;
 
 	/**
-	 * Méthode de démarrage
-	 * @param args non utilisé
+	 * Mï¿½thode de dï¿½marrage
+	 * 
+	 * @param args non utilisï¿½
 	 */
 	public static void main(String[] args) {
 		new Controle();
 	}
-	
+
 	/**
 	 * Constructeur
 	 */
 	private Controle() {
-		this.frmEntreeJeu = new EntreeJeu() ;
+		this.frmEntreeJeu = new EntreeJeu(this);
 		this.frmEntreeJeu.setVisible(true);
+
+		
 	}
 
+	public void evenementEntreeJeu(String message) {
+
+		if (message == "serveur") {
+			typeJeu = "serveur";
+			frmArene.setVisible(true);
+			ServeurSocket serveurSocket = new ServeurSocket(this, Port);
+			frmEntreeJeu.dispose();
+		} else {
+			typeJeu = "client";
+			// frmChoixJoueur.setVisible(true);
+			ClientSocket clientSocket = new ClientSocket(this, message, Port);
+			// frmEntreeJeu.dispose();
+		}
+
+	}
+
+	@Override
+	public void reception(Connection connection, String ordre, Object info) {
+		switch(ordre) {
+			case "connexion":
+				
+				if(typeJeu == "serveur") {
+					
+				}
+				else {
+					this.frmArene = new Arene(this);
+					this.frmChoixJoueur = new ChoixJoueur(this);
+					this.frmChoixJoueur.setVisible(true);
+					frmEntreeJeu.dispose();
+				}
+				break;
+			
+			case "reception":
+				break;
+		
+			case "deconnexion":
+				break;
+		}
+		
+	}
 }
