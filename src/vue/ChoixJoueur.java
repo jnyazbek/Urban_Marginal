@@ -26,12 +26,32 @@ public class ChoixJoueur extends JFrame {
 	 * Zone de saisie du pseudo
 	 */
 	private JTextField txtPseudo;
-
+	
+	/**
+	 * Zone d'affichage du personnage
+	 */
+	private JLabel lblPersonnage;
+	
+	/**
+	 * Constante nombre de personnage
+	 */
+	public static final int NBPERSO = 3;
+	/**
+	 * Numero de personnage selectionne
+	 */
+	private int selectedPerso;
 	/**
 	 * Clic sur la fl�che "pr�c�dent" pour afficher le personnage pr�c�dent
 	 */
 	private void lblPrecedent_clic() {
 		System.out.println("Clic sur precedent");
+		if(selectedPerso <= 1) {
+			selectedPerso = NBPERSO;
+		}
+		else {
+			selectedPerso--;
+		}
+		lblPersonnage.setIcon(AffichePerso());
 	}
 	
 	/**
@@ -39,6 +59,13 @@ public class ChoixJoueur extends JFrame {
 	 */
 	private void lblSuivant_clic() {
 		System.out.println("Clic sur suivant");
+		if(selectedPerso >= NBPERSO) {
+			selectedPerso = 1;
+		}
+		else {
+			selectedPerso++;
+		}
+		lblPersonnage.setIcon(AffichePerso());
 	}
 	
 	/**
@@ -65,6 +92,13 @@ public class ChoixJoueur extends JFrame {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		selectedPerso = 1;
+		lblPersonnage = new JLabel("");
+		lblPersonnage.setBounds(142, 114, 120, 119);
+		lblPersonnage.setHorizontalAlignment(JLabel.CENTER);
+		lblPersonnage.setIcon(AffichePerso());
+		contentPane.add(lblPersonnage);
 		
 		JLabel lblPrecedent = new JLabel("");
 		lblPrecedent.addMouseListener(new MouseAdapter() {
@@ -109,9 +143,30 @@ public class ChoixJoueur extends JFrame {
 		lblFond.setIcon(new ImageIcon(resource));		
 		contentPane.add(lblFond);
 		
+		
+		
 		// positionnement sur la zone de saisie
 		txtPseudo.requestFocus();
 		this.controle = controle;
 	}
-
+	/**
+	 * Le nom du fichier est construit de la
+	façon suivante :
+	"perso" + num_perso + état_perso + num_étape_état_perso + "d" + direction
+	Avec :
+	- num_perso : numéro du personnage (ici, 3 personnages numérotés de 1 à 3).
+	- état_perso : "marche", "touche" ou "mort"
+	 num_étape_état_perso : 4 étapes pour la marche, 2 pour touché et 2 pour mort
+	- direction : 0 pour gauche et 1 pour droite
+	 * @return
+	 */
+	public ImageIcon AffichePerso() {
+		
+		String chemin = "personnages/"+ "perso"+ String.valueOf(selectedPerso)+ "marche1d1.gif";
+		URL perso = getClass().getClassLoader().getResource(chemin);
+		System.out.println(chemin);
+		ImageIcon imgPerso = new ImageIcon(perso);
+		return imgPerso;
+	}
+	
 }

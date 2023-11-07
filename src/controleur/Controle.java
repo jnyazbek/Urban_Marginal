@@ -42,6 +42,7 @@ public class Controle implements AsyncResponse {
 
 		if (message == "serveur") {
 			typeJeu = "serveur";
+			frmArene = new Arene(this);
 			frmArene.setVisible(true);
 			ServeurSocket serveurSocket = new ServeurSocket(this, Port);
 			frmEntreeJeu.dispose();
@@ -51,7 +52,7 @@ public class Controle implements AsyncResponse {
 			ClientSocket clientSocket = new ClientSocket(this, message, Port);
 			// frmEntreeJeu.dispose();
 		}
-
+		System.out.println("evenementEntreeJeu"+typeJeu);
 	}
 
 	@Override
