@@ -1,23 +1,34 @@
 package modele;
 
+import controleur.Controle;
+import outils.connexion.Connection;
+
 /**
- * Gestion du jeu côté client
+ * Gestion du jeu cï¿½tï¿½ client
  *
  */
 public class JeuClient extends Jeu {
 	
 	/**
-	 * Controleur
+	 * objet de connexion pour communiquer avec le serveur
 	 */
-	public JeuClient() {
+	private Connection connection;
+	
+	/**
+	 * Controleur
+	 * @param controle instance du contrï¿½leur pour les ï¿½changes
+	 */
+	public JeuClient(Controle controle) {
+		super.controle = controle;
 	}
 	
 	@Override
-	public void connexion() {
+	public void connexion(Connection connection) {
+		this.connection = connection;
 	}
 
 	@Override
-	public void reception() {
+	public void reception(Connection connection, Object info) {
 	}
 	
 	@Override
@@ -26,9 +37,11 @@ public class JeuClient extends Jeu {
 
 	/**
 	 * Envoi d'une information vers le serveur
-	 * fais appel une fois à l'envoi dans la classe Jeu
+	 * fais appel une fois ï¿½ l'envoi dans la classe Jeu
+	 * @param info information ï¿½ envoyer au serveur
 	 */
-	public void envoi() {
+	public void envoi(String info) {
+		super.envoi(this.connection, info);
 	}
 
 }

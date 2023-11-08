@@ -7,16 +7,23 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Dimension;
+import javax.swing.SwingConstants;
+
 import controleur.Controle;
+import controleur.Global;
+
+import java.awt.Cursor;
+import java.awt.Dimension;
+
 /**
  * Frame du choix du joueur
  * @author emds
  *
  */
-public class ChoixJoueur extends JFrame {
+public class ChoixJoueur extends JFrame implements Global {
 
 	/**
 	 * Panel g�n�ral
@@ -26,59 +33,73 @@ public class ChoixJoueur extends JFrame {
 	 * Zone de saisie du pseudo
 	 */
 	private JTextField txtPseudo;
-	
 	/**
-	 * Zone d'affichage du personnage
+	 * Label d'affichage du personnage
 	 */
 	private JLabel lblPersonnage;
-	
 	/**
-	 * Constante nombre de personnage
+	 * Instance du contr�leur pour communiquer avec lui
 	 */
-	public static final int NBPERSO = 3;
+	private Controle controle;
 	/**
-	 * Numero de personnage selectionne
+	 * Num�ro du personnage s�lectionn�
 	 */
-	private int selectedPerso;
+	private int numPerso;
+
 	/**
 	 * Clic sur la fl�che "pr�c�dent" pour afficher le personnage pr�c�dent
 	 */
 	private void lblPrecedent_clic() {
-		System.out.println("Clic sur precedent");
-		if(selectedPerso <= 1) {
-			selectedPerso = NBPERSO;
-		}
-		else {
-			selectedPerso--;
-		}
-		lblPersonnage.setIcon(AffichePerso());
+		numPerso = ((numPerso+1)%NBPERSOS)+1;
+		affichePerso();
 	}
 	
 	/**
 	 * Clic sur la fl�che "suivant" pour afficher le personnage suivant
 	 */
 	private void lblSuivant_clic() {
-		System.out.println("Clic sur suivant");
-		if(selectedPerso >= NBPERSO) {
-			selectedPerso = 1;
-		}
-		else {
-			selectedPerso++;
-		}
-		lblPersonnage.setIcon(AffichePerso());
+		numPerso = (numPerso%NBPERSOS)+1 ;
+		affichePerso();
 	}
 	
 	/**
 	 * Clic sur GO pour envoyer les informations
 	 */
 	private void lblGo_clic() {
-		(new Arene(controle)).setVisible(true);
-		this.dispose();
+		if(this.txtPseudo.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "La saisie du pseudo est obligatoire");
+			this.txtPseudo.requestFocus();
+		} else {
+			this.controle.evenementChoixJoueur(this.txtPseudo.getText(), numPerso);
+		}
+	}
+	
+	/**
+	 * Affichage du personnage correspondant au num�ro numPerso
+	 */
+	private void affichePerso() {
+		String chemin = CHEMINPERSONNAGES+PERSO+this.numPerso+MARCHE+1+"d"+1+EXTFICHIERPERSO;
+		URL resource = getClass().getClassLoader().getResource(chemin);
+		this.lblPersonnage.setIcon(new ImageIcon(resource));		
 	}
 
-	private Controle controle;
+	/**
+	 * Change le curseur de la souris en forme normale
+	 */
+	private void sourisNormale() {
+		contentPane.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	}
+	
+	/**
+	 * Change le curseur de la souris en forme de doigt point�
+	 */
+	private void sourisDoigt() {
+		contentPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
 	/**
 	 * Create the frame.
+	 * @param controle instance du contr�leur
 	 */
 	public ChoixJoueur(Controle controle) {
 		// Dimension de la frame en fonction de son contenu
@@ -92,12 +113,10 @@ public class ChoixJoueur extends JFrame {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		selectedPerso = 1;
+
 		lblPersonnage = new JLabel("");
-		lblPersonnage.setBounds(142, 114, 120, 119);
-		lblPersonnage.setHorizontalAlignment(JLabel.CENTER);
-		lblPersonnage.setIcon(AffichePerso());
+		lblPersonnage.setBounds(142, 115, 120, 120);
+		lblPersonnage.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblPersonnage);
 		
 		JLabel lblPrecedent = new JLabel("");
@@ -105,6 +124,14 @@ public class ChoixJoueur extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				lblPrecedent_clic();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sourisDoigt();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sourisNormale();
 			}
 		});
 		
@@ -114,6 +141,14 @@ public class ChoixJoueur extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				lblSuivant_clic();
 			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sourisDoigt();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sourisNormale();
+			}
 		});
 		
 		JLabel lblGo = new JLabel("");
@@ -121,6 +156,14 @@ public class ChoixJoueur extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblGo_clic();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sourisDoigt();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sourisNormale();
 			}
 		});
 		
@@ -138,35 +181,19 @@ public class ChoixJoueur extends JFrame {
 		
 		JLabel lblFond = new JLabel("");
 		lblFond.setBounds(0, 0, 400, 275);
-		String chemin = "fonds/fondchoix.jpg";
-		URL resource = getClass().getClassLoader().getResource(chemin);
+		URL resource = getClass().getClassLoader().getResource(FONDCHOIX);
 		lblFond.setIcon(new ImageIcon(resource));		
 		contentPane.add(lblFond);
 		
+		// r�cup�ration de l'instance de Controle
+		this.controle = controle;
 		
-		
+		// affichage du premier personnage
+		this.numPerso = 1;
+		this.affichePerso();
+
 		// positionnement sur la zone de saisie
 		txtPseudo.requestFocus();
-		this.controle = controle;
+
 	}
-	/**
-	 * Le nom du fichier est construit de la
-	façon suivante :
-	"perso" + num_perso + état_perso + num_étape_état_perso + "d" + direction
-	Avec :
-	- num_perso : numéro du personnage (ici, 3 personnages numérotés de 1 à 3).
-	- état_perso : "marche", "touche" ou "mort"
-	 num_étape_état_perso : 4 étapes pour la marche, 2 pour touché et 2 pour mort
-	- direction : 0 pour gauche et 1 pour droite
-	 * @return
-	 */
-	public ImageIcon AffichePerso() {
-		
-		String chemin = "personnages/"+ "perso"+ String.valueOf(selectedPerso)+ "marche1d1.gif";
-		URL perso = getClass().getClassLoader().getResource(chemin);
-		System.out.println(chemin);
-		ImageIcon imgPerso = new ImageIcon(perso);
-		return imgPerso;
-	}
-	
 }

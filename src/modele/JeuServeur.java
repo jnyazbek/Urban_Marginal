@@ -1,34 +1,51 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+
+import controleur.Controle;
+import controleur.Global;
+import outils.connexion.Connection;
 
 /**
- * Gestion du jeu côté serveur
+ * Gestion du jeu cï¿½tï¿½ serveur
  *
  */
-public class JeuServeur extends Jeu {
+public class JeuServeur extends Jeu implements Global {
 
 	/**
 	 * Collection de murs
 	 */
 	private ArrayList<Mur> lesMurs = new ArrayList<Mur>() ;
 	/**
-	 * Collection de joueurs
+	 * Dictionnaire de joueurs indexï¿½ sur leur objet de connexion
 	 */
-	private ArrayList<Joueur> lesJoueurs = new ArrayList<Joueur>() ;
+	private Hashtable<Connection, Joueur> lesJoueurs = new Hashtable<Connection, Joueur>() ;
 	
 	/**
 	 * Constructeur
+	 * @param controle instance du contrï¿½leur pour les ï¿½changes
 	 */
-	public JeuServeur() {
+	public JeuServeur(Controle controle) {
+		super.controle = controle;
 	}
 	
 	@Override
-	public void connexion() {
+	public void connexion(Connection connection) {
+		this.lesJoueurs.put(connection, new Joueur());
 	}
 
 	@Override
-	public void reception() {
+	public void reception(Connection connection, Object info) {
+		String[] infos = ((String)info).split(STRINGSEPARE);
+		String ordre = infos[0];
+		switch(ordre) {
+		case PSEUDO :
+			String pseudo = infos[1];
+			int numPerso = Integer.parseInt(infos[2]);
+			this.lesJoueurs.get(connection).initPerso(pseudo, numPerso);
+			break;
+		}
 	}
 	
 	@Override
@@ -37,13 +54,13 @@ public class JeuServeur extends Jeu {
 
 	/**
 	 * Envoi d'une information vers tous les clients
-	 * fais appel plusieurs fois à l'envoi de la classe Jeu
+	 * fais appel plusieurs fois ï¿½ l'envoi de la classe Jeu
 	 */
 	public void envoi() {
 	}
 
 	/**
-	 * Génération des murs
+	 * Gï¿½nï¿½ration des murs
 	 */
 	public void constructionMurs() {
 	}

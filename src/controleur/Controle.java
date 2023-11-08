@@ -1,82 +1,114 @@
 package controleur;
 
+import modele.Jeu;
+import modele.JeuClient;
+import modele.JeuServeur;
+import outils.connexion.AsyncResponse;
+import outils.connexion.ClientSocket;
+import outils.connexion.Connection;
+import outils.connexion.ServeurSocket;
 import vue.Arene;
 import vue.ChoixJoueur;
 import vue.EntreeJeu;
-import outils.connexion.*;
 
-/*
- * Contr�leur et point d'entr�e de l'applicaton
- * 
+/**
+ * Contr�leur et point d'entr�e de l'applicaton 
  * @author emds
  *
  */
-public class Controle implements AsyncResponse {
+public class Controle implements AsyncResponse, Global {
 
-	private EntreeJeu frmEntreeJeu;
+	/**
+	 * frame EntreeJeu
+	 */
+	private EntreeJeu frmEntreeJeu ;
+	/**
+	 * frame Arene
+	 */
 	private Arene frmArene;
+	/**
+	 * frame ChoixJoueur
+	 */
 	private ChoixJoueur frmChoixJoueur;
-	private String typeJeu;
-	public static final int Port = 6666;
+	/**
+	 * instance du jeu (JeuServeur ou JeuClient)
+	 */
+	private Jeu leJeu;
 
 	/**
 	 * M�thode de d�marrage
-	 * 
 	 * @param args non utilis�
 	 */
 	public static void main(String[] args) {
 		new Controle();
 	}
-
+	
 	/**
 	 * Constructeur
 	 */
 	private Controle() {
-		this.frmEntreeJeu = new EntreeJeu(this);
+		this.frmEntreeJeu = new EntreeJeu(this) ;
 		this.frmEntreeJeu.setVisible(true);
-
-		
 	}
-
-	public void evenementEntreeJeu(String message) {
-
-		if (message == "serveur") {
-			typeJeu = "serveur";
-			frmArene = new Arene(this);
-			frmArene.setVisible(true);
-			ServeurSocket serveurSocket = new ServeurSocket(this, Port);
-			frmEntreeJeu.dispose();
+	
+	/**
+	 * Demande provenant de la vue EntreeJeu
+	 * @param info information � traiter
+	 */
+	public void evenementEntreeJeu(String info) {
+		if(info.equals("serveur")) {
+			new ServeurSocket(this, PORT);
+			this.leJeu = new JeuServeur(this);
+			this.frmEntreeJeu.dispose();
+			this.frmArene = new Arene();
+			this.frmArene.setVisible(true);
 		} else {
-			typeJeu = "client";
-			// frmChoixJoueur.setVisible(true);
-			ClientSocket clientSocket = new ClientSocket(this, message, Port);
-			// frmEntreeJeu.dispose();
+			new ClientSocket(this, info, PORT);
 		}
-		System.out.println("evenementEntreeJeu"+typeJeu);
+	}
+	
+	/**
+	 * Informations provenant de la vue ChoixJoueur
+	 * @param pseudo le pseudo du joueur
+	 * @param numPerso le num�ro du personnage choisi par le joueur
+	 */
+	public void evenementChoixJoueur(String pseudo, int numPerso) {
+		this.frmChoixJoueur.dispose();
+		this.frmArene.setVisible(true);
+		((JeuClient)this.leJeu).envoi(PSEUDO+STRINGSEPARE+pseudo+STRINGSEPARE+numPerso);
 	}
 
+	/**
+	 * Envoi d'informations vers l'ordinateur distant
+	 * @param connection objet de connexion pour l'envoi vers l'ordinateur distant
+	 * @param info information � envoyer
+	 */
+	public void envoi(Connection connection, Object info) {
+		connection.envoi(info);
+	}
+	
 	@Override
 	public void reception(Connection connection, String ordre, Object info) {
 		switch(ordre) {
-			case "connexion":
-				
-				if(typeJeu == "serveur") {
-					
-				}
-				else {
-					this.frmArene = new Arene(this);
-					this.frmChoixJoueur = new ChoixJoueur(this);
-					this.frmChoixJoueur.setVisible(true);
-					frmEntreeJeu.dispose();
-				}
-				break;
-			
-			case "reception":
-				break;
-		
-			case "deconnexion":
-				break;
+		case CONNEXION :
+			if(!(this.leJeu instanceof JeuServeur)) {
+				this.leJeu = new JeuClient(this);
+				this.leJeu.connexion(connection);
+				this.frmEntreeJeu.dispose();
+				this.frmArene = new Arene();
+				this.frmChoixJoueur = new ChoixJoueur(this);
+				this.frmChoixJoueur.setVisible(true);
+			} else {
+				this.leJeu.connexion(connection);
+			}
+			break;
+		case RECEPTION :
+			this.leJeu.reception(connection, info);
+			break;
+		case DECONNEXION :
+			break;
 		}
 		
 	}
+
 }

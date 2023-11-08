@@ -1,13 +1,13 @@
 package vue;
 
 import java.awt.event.MouseAdapter;
-
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import controleur.Controle;
 
 /**
@@ -17,7 +17,6 @@ import controleur.Controle;
  */
 public class EntreeJeu extends JFrame {
 
-	private Controle controle;
 	/**
 	 * Panel g�n�ral
 	 */
@@ -25,14 +24,17 @@ public class EntreeJeu extends JFrame {
 	/**
 	 * Zone de saisie de l'IP
 	 */
-	private JTextField txtIp;
+	private JTextField txtIp;	
+	/**
+	 * Instance du contr�leur pour communiquer avec lui
+	 */
+	private Controle controle;
 
 	/**
 	 * clic sur le bouton Start pour lancer le serveur
 	 */
 	private void btnStart_clic() {
-		controle.evenementEntreeJeu("serveur");
-		
+		this.controle.evenementEntreeJeu("serveur");
 	}
 	
 	/**
@@ -46,12 +48,12 @@ public class EntreeJeu extends JFrame {
 	 * clic sur le bouton Connect pour se connecter � un serveur
 	 */
 	private void btnConnect_clic() {
-		controle.evenementEntreeJeu(txtIp.getName());
-		
+		this.controle.evenementEntreeJeu(this.txtIp.getText());
 	}
 
 	/**
 	 * Create the frame.
+	 * @param controle instance du contr�leur
 	 */
 	public EntreeJeu(Controle controle) {
 		setResizable(false);
@@ -110,8 +112,8 @@ public class EntreeJeu extends JFrame {
 		btnExit.setBounds(186, 91, 89, 23);
 		contentPane.add(btnExit);
 		
+		// r�cup�ration de l'instance de Controle
 		this.controle = controle;
-		
-			}
+	}
 
 }
