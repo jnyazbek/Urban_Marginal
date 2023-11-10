@@ -3,8 +3,8 @@ package modele;
 import javax.swing.JLabel;
 
 /**
- * Informations communes � tous les objets (joueurs, murs, boules)
- * permet de m�moriser la position de l'objet et de g�rer les  collisions
+ * Informations communes é tous les objets (joueurs, murs, boules)
+ * permet de mémoriser la position de l'objet et de gérer les  collisions
  *
  */
 public abstract class Objet {
@@ -30,8 +30,8 @@ public abstract class Objet {
 	}
 
 	/**
-	 * contr�le si l'objet actuel touche l'objet pass� en param�tre
-	 * @param objet contient l'objet � contr�ler
+	 * contréle si l'objet actuel touche l'objet passé en paramétre
+	 * @param objet contient l'objet é contréler
 	 * @return true si les 2 objets se touchent
 	 */
 	public Boolean toucheObjet (Objet objet) {

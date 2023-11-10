@@ -14,15 +14,15 @@ import controleur.Global;
 public class Mur extends Objet implements Global {
 
 	/**
-	 * Constructeur : cr�e un mur (position al�atoire, image)
+	 * Constructeur : crée un mur (position aléatoire, image)
 	 */
 	public Mur() {
-		// calcul position al�atoire du mur
+		// calcul position aléatoire du mur
 		posX = (int) Math.round(Math.random() * (LARGEURARENE - LARGEURMUR)) ;
 		posY = (int) Math.round(Math.random() * (HAUTEURARENE - HAUTEURMUR)) ;
-		// cr�ation du jLabel pour ce mur
+		// création du jLabel pour ce mur
 		jLabel = new JLabel();
-		// caract�ristiques du mur (position, image)
+		// caractéristiques du mur (position, image)
 		jLabel.setBounds(posX, posY, LARGEURMUR, HAUTEURMUR);
 		URL resource = getClass().getClassLoader().getResource(MUR);
 		jLabel.setIcon(new ImageIcon(resource));

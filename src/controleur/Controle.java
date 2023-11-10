@@ -15,7 +15,7 @@ import vue.ChoixJoueur;
 import vue.EntreeJeu;
 
 /**
- * Contr�leur et point d'entr�e de l'applicaton 
+ * Contréleur et point d'entrée de l'applicaton 
  * @author emds
  *
  */
@@ -39,8 +39,8 @@ public class Controle implements AsyncResponse, Global {
 	private Jeu leJeu;
 
 	/**
-	 * M�thode de d�marrage
-	 * @param args non utilis�
+	 * Méthode de démarrage
+	 * @param args non utilisé
 	 */
 	public static void main(String[] args) {
 		new Controle();
@@ -56,14 +56,14 @@ public class Controle implements AsyncResponse, Global {
 	
 	/**
 	 * Demande provenant de la vue EntreeJeu
-	 * @param info information � traiter
+	 * @param info information é traiter
 	 */
 	public void evenementEntreeJeu(String info) {
 		if(info.equals(SERVEUR)) {
 			new ServeurSocket(this, PORT);
 			this.leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
-			this.frmArene = new Arene();
+			this.frmArene = new Arene(this, SERVEUR);
 			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 		} else {
@@ -74,7 +74,7 @@ public class Controle implements AsyncResponse, Global {
 	/**
 	 * Informations provenant de la vue ChoixJoueur
 	 * @param pseudo le pseudo du joueur
-	 * @param numPerso le num�ro du personnage choisi par le joueur
+	 * @param numPerso le numéro du personnage choisi par le joueur
 	 */
 	public void evenementChoixJoueur(String pseudo, int numPerso) {
 		this.frmChoixJoueur.dispose();
@@ -83,9 +83,17 @@ public class Controle implements AsyncResponse, Global {
 	}
 	
 	/**
+	 * Information provenant de la vue Arene
+	 * @param info information
+	 */
+	public void evenementArene(String info) {
+		((JeuClient)this.leJeu).envoi(TCHAT+STRINGSEPARE+info);
+	}
+	
+	/**
 	 * Demande provenant de JeuServeur
-	 * @param ordre ordre � ex�cuter
-	 * @param info information � traiter
+	 * @param ordre ordre é exécuter
+	 * @param info information é traiter
 	 */
 	public void evenementJeuServeur(String ordre, Object info) {
 		switch(ordre) {
@@ -101,13 +109,17 @@ public class Controle implements AsyncResponse, Global {
 		case MODIFPANELJEU :
 			this.leJeu.envoi((Connection)info, this.frmArene.getJpnJeu());
 			break;
+		case AJOUTPHRASE :
+			this.frmArene.ajoutTchat((String)info);
+			((JeuServeur)this.leJeu).envoi(this.frmArene.getTxtChat());
+			break;
 		}
 	}
 	
 	/**
 	 * Demande provenant de JeuClient
-	 * @param ordre ordre � ex�cuter
-	 * @param info information � traiter
+	 * @param ordre ordre é exécuter
+	 * @param info information é traiter
 	 */
 	public void evenementJeuClient(String ordre, Object info) {
 		switch(ordre) {
@@ -117,13 +129,16 @@ public class Controle implements AsyncResponse, Global {
 		case MODIFPANELJEU :
 			this.frmArene.setJpnJeu((JPanel)info);
 			break;
+		case MODIFTCHAT :
+			this.frmArene.setTxtChat((String)info);
+			break;
 		}
 	}
 
 	/**
 	 * Envoi d'informations vers l'ordinateur distant
 	 * @param connection objet de connexion pour l'envoi vers l'ordinateur distant
-	 * @param info information � envoyer
+	 * @param info information é envoyer
 	 */
 	public void envoi(Connection connection, Object info) {
 		connection.envoi(info);
@@ -137,7 +152,7 @@ public class Controle implements AsyncResponse, Global {
 				this.leJeu = new JeuClient(this);
 				this.leJeu.connexion(connection);
 				this.frmEntreeJeu.dispose();
-				this.frmArene = new Arene();
+				this.frmArene = new Arene(this, CLIENT);
 				this.frmChoixJoueur = new ChoixJoueur(this);
 				this.frmChoixJoueur.setVisible(true);
 			} else {
