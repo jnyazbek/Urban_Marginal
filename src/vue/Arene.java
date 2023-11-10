@@ -25,6 +25,14 @@ public class Arene extends JFrame implements Global {
 	 */
 	private JPanel contentPane;
 	/**
+	 * Panel contenant les murs
+	 */
+	private JPanel jpnMurs;
+	/**
+	 * Panel contenant les joueurs et les boules
+	 */
+	private JPanel jpnJeu;
+	/**
 	 * Zone de saisie du t'chat
 	 */
 	private JTextField txtSaisie;
@@ -32,13 +40,62 @@ public class Arene extends JFrame implements Global {
 	 * Zone d'affichage du t'chat
 	 */
 	private JTextArea txtChat ;
+	
+	/**
+	 * @return the jpnMurs
+	 */
+	public JPanel getJpnMurs() {
+		return jpnMurs;
+	}
 
+	/**
+	 * @param jpnMurs the jpnMurs to set
+	 */
+	public void setJpnMurs(JPanel jpnMurs) {
+		this.jpnMurs.add(jpnMurs);
+		this.jpnMurs.repaint();
+	}
+
+	/**
+	 * @return the jpnJeu
+	 */
+	public JPanel getJpnJeu() {
+		return jpnJeu;
+	}
+
+	/**
+	 * @param jpnJeu the jpnJeu to set
+	 */
+	public void setJpnJeu(JPanel jpnJeu) {
+		this.jpnJeu.removeAll();
+		this.jpnJeu.add(jpnJeu);
+		this.jpnJeu.repaint();
+	}
+
+	/**
+	 * Ajoute un mur dans le panel des murs
+	 * @param unMur le mur � ajouter
+	 */
+	public void ajoutMurs(Object unMur) {
+		jpnMurs.add((JLabel)unMur);
+		jpnMurs.repaint();
+	}
+	
+	/**
+	 * Ajout d'un joueur, son message ou sa boule, dans le panel de jeu
+	 * @param unJLabel le label � ajouter
+	 */
+	public void ajoutJLabelJeu(JLabel unJLabel) {
+		this.jpnJeu.add(unJLabel);
+		this.jpnJeu.repaint();
+	}
+	
 	/**
 	 * Create the frame.
 	 */
 	public Arene() {
 		// Dimension de la frame en fonction de son contenu
-		this.getContentPane().setPreferredSize(new Dimension(800, 600 + 25 + 140));
+		this.getContentPane().setPreferredSize(new Dimension(LARGEURARENE, HAUTEURARENE + 25 + 140));
 	    this.pack();
 	    // interdiction de changer la taille
 		this.setResizable(false);
@@ -49,6 +106,18 @@ public class Arene extends JFrame implements Global {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 	
+		jpnJeu = new JPanel();
+		jpnJeu.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);
+		jpnJeu.setOpaque(false);
+		jpnJeu.setLayout(null);		
+		contentPane.add(jpnJeu);
+		
+		jpnMurs = new JPanel();
+		jpnMurs.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);
+		jpnMurs.setOpaque(false);
+		jpnMurs.setLayout(null);		
+		contentPane.add(jpnMurs);
+		
 		txtSaisie = new JTextField();
 		txtSaisie.setBounds(0, 600, 800, 25);
 		contentPane.add(txtSaisie);

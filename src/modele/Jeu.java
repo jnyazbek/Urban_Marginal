@@ -39,6 +39,7 @@ public abstract class Jeu {
 	 */
 	public void envoi(Connection connection, Object info) {
 		this.controle.envoi(connection, info);
+		System.out.println("message envoyé dans jeu");
 	}
 	
 }

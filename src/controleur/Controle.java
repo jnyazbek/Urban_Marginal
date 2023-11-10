@@ -1,5 +1,8 @@
 package controleur;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import modele.Jeu;
 import modele.JeuClient;
 import modele.JeuServeur;
@@ -56,11 +59,12 @@ public class Controle implements AsyncResponse, Global {
 	 * @param info information � traiter
 	 */
 	public void evenementEntreeJeu(String info) {
-		if(info.equals("serveur")) {
+		if(info.equals(SERVEUR)) {
 			new ServeurSocket(this, PORT);
 			this.leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
 			this.frmArene = new Arene();
+			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 		} else {
 			new ClientSocket(this, info, PORT);
@@ -76,6 +80,44 @@ public class Controle implements AsyncResponse, Global {
 		this.frmChoixJoueur.dispose();
 		this.frmArene.setVisible(true);
 		((JeuClient)this.leJeu).envoi(PSEUDO+STRINGSEPARE+pseudo+STRINGSEPARE+numPerso);
+	}
+	
+	/**
+	 * Demande provenant de JeuServeur
+	 * @param ordre ordre � ex�cuter
+	 * @param info information � traiter
+	 */
+	public void evenementJeuServeur(String ordre, Object info) {
+		switch(ordre) {
+		case AJOUTMUR :
+			frmArene.ajoutMurs(info);
+			break;
+		case AJOUTPANELMURS :
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
+			break;
+		case AJOUTJLABELJEU :
+			this.frmArene.ajoutJLabelJeu((JLabel)info);
+			break;
+		case MODIFPANELJEU :
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnJeu());
+			break;
+		}
+	}
+	
+	/**
+	 * Demande provenant de JeuClient
+	 * @param ordre ordre � ex�cuter
+	 * @param info information � traiter
+	 */
+	public void evenementJeuClient(String ordre, Object info) {
+		switch(ordre) {
+		case AJOUTPANELMURS :
+			this.frmArene.setJpnMurs((JPanel)info);
+			break;
+		case MODIFPANELJEU :
+			this.frmArene.setJpnJeu((JPanel)info);
+			break;
+		}
 	}
 
 	/**
