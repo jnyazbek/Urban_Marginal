@@ -11,15 +11,15 @@ package controleur;
 public interface Global {
 	
 	/**
-	 * Né du port d'écoute du serveur
+	 * N� du port d'�coute du serveur
 	 */
 	int PORT = 6666;
 	/**
-	 * Nombre de personnages différents
+	 * Nombre de personnages diff�rents
 	 */
 	int NBPERSOS = 3;
 	/**
-	 * Caractére de séparation dans un chemin de fichiers
+	 * Caract�re de s�paration dans un chemin de fichiers
 	 */
 	String CHEMINSEPARATOR = "/";
 	/**
@@ -51,11 +51,55 @@ public interface Global {
 	 */
 	String FONDARENE = CHEMINFONDS+"fondarene.jpg";
 	/**
+	 * Chemin du son welcome (entr�e dans la vue ChoixJoueur)
+	 */
+	String SONWELCOME = CHEMINSONS+"welcome.wav";
+	/**
+	 * Chemin du son precedent (clic sur le bouton pr�c�dent de la vue ChoixJoueur)
+	 */
+	String SONPRECEDENT = CHEMINSONS+"precedent.wav";
+	/**
+	 * Chemin du son suivant (clic sur le bouton suivant de la vue ChoixJoueur)
+	 */
+	String SONSUIVANT = CHEMINSONS+"suivant.wav";
+	/**
+	 * Chemin du son go (clic sur le bouton GO de la vue ChoixJoueur)
+	 */
+	String SONGO = CHEMINSONS+"go.wav";
+	/**
+	 * Chemin du son flight (tir de la boule)
+	 */
+	String SONFIGHT = CHEMINSONS+"fight.wav";
+	/**
+	 * Chemin du son hurt (joueur bless�)
+	 */
+	String SONHURT = CHEMINSONS+"hurt.wav";
+	/**
+	 * Chemin du son death (joueur tu�)
+	 */
+	String SONDEATH = CHEMINSONS+"death.wav";
+	/**
+	 * tableau des sons de la vue Arene
+	 */
+	String[] SON =  {CHEMINSONS + "fight.wav", CHEMINSONS + "hurt.wav", CHEMINSONS + "death.wav"} ;
+	/**
+	 * num�ro correspondant au son FIGHT
+	 */
+	int FIGHT = 0;
+	/**
+	 * num�ro correspondant au son HURT
+	 */
+	int HURT = 1;
+	/**
+	 * num�ro correspondant au son DEATH
+	 */
+	int DEATH = 2;
+	/**
 	 * Extension des fichiers des images des personnages
 	 */
 	String EXTFICHIERPERSO = ".gif";
 	/**
-	 * Début du nom des images des personnages
+	 * D�but du nom des images des personnages
 	 */
 	String PERSO = "perso";
 	/**
@@ -67,39 +111,39 @@ public interface Global {
 	 */
 	String MUR = CHEMINMURS+"mur.gif";
 	/**
-	 * état marche du personnage
+	 * �tat marche du personnage
 	 */
 	String MARCHE = "marche";
 	/**
-	 * état touché du personnage
+	 * �tat touch� du personnage
 	 */
 	String TOUCHE = "touche";
 	/**
-	 * état mort du personnage
+	 * �tat mort du personnage
 	 */
 	String MORT = "mort";
 	/**
-	 * Caractére de séparation dans les chaines transférées
+	 * Caract�re de s�paration dans les chaines transf�r�es
 	 */
 	String STRINGSEPARE = "~";
 	/**
-	 * Message "connexion" envoyé par la classe Connection
+	 * Message "connexion" envoy� par la classe Connection
 	 */
 	String CONNEXION = "connexion";
 	/**
-	 * Message "réception" envoyé par la classe Connection
+	 * Message "r�ception" envoy� par la classe Connection
 	 */
-	String RECEPTION = "réception";
+	String RECEPTION = "r�ception";
 	/**
-	 * Message "déconnexion" envoyé par la classe Connection
+	 * Message "d�connexion" envoy� par la classe Connection
 	 */
-	String DECONNEXION = "déconnexion";
+	String DECONNEXION = "d�connexion";
 	/**
-	 * Message "pseudo" envoyé pour la création d'un joueur
+	 * Message "pseudo" envoy� pour la cr�ation d'un joueur
 	 */
 	String PSEUDO = "pseudo";
 	/**
-	 * vie de départ pour tous les joueurs
+	 * vie de d�part pour tous les joueurs
 	 */
 	int MAXVIE = 10 ;
 	/**
@@ -111,15 +155,15 @@ public interface Global {
 	 */
 	int PERTE = 2 ; 
 	/**
-	 * nombre de murs dans l'aréne
+	 * nombre de murs dans l'ar�ne
 	 */
 	int NBMURS = 20;
 	/**
-	 * hauteur de la zone de jeu de l'aréne
+	 * hauteur de la zone de jeu de l'ar�ne
 	 */
 	int HAUTEURARENE = 600;
 	/**
-	 * largeur de la zone de heu de l'aréne
+	 * largeur de la zone de heu de l'ar�ne
 	 */
 	int LARGEURARENE = 800;
 	/**
@@ -143,6 +187,14 @@ public interface Global {
 	 */
 	int HAUTEURMESSAGE = 8;
 	/**
+	 * largeur de la boule
+	 */
+	int LARGEURBOULE = 17;
+	/**
+	 * hauteur de la boule
+	 */
+	int HAUTEURBOULE = 17;
+	/**
 	 * orientation du personnage vers la gauche
 	 */
 	int GAUCHE = 0;
@@ -151,27 +203,43 @@ public interface Global {
 	 */
 	int DROITE = 1;
 	/**
-	 * Message "serveur" pour la création d'un serveur
+	 * taille du pas quand le personnage avance (nombre de pixels)
+	 */
+	int PAS = 10;
+	/**
+	 * nombre d'�tapes (d'images) pour donner l'impresson de marche
+	 */
+	int NBETAPESMARCHE = 4;
+	/**
+	 * nombre d'�tapes (d'images) pour donner l'impression d'�tre touch�
+	 */
+	int NBETAPESTOUCHE = 2;
+	/**
+	 * nombre d'�tapes (d'images) pour donner l'impresson de mourir
+	 */
+	int NBETAPESMORT = 2;
+	/**
+	 * Message "serveur" pour la cr�ation d'un serveur
 	 */
 	String SERVEUR = "serveur";
 	/**
-	 * Message "client" pour la création d'un client
+	 * Message "client" pour la cr�ation d'un client
 	 */
 	String CLIENT = "client";
 	/**
-	 * ordre pour ajouter un mur dans l'aréne du serveur
+	 * ordre pour ajouter un mur dans l'ar�ne du serveur
 	 */
 	String AJOUTMUR = "ajout mur";
 	/**
-	 * ordre pour ajouter le panel des murs dans l'aréne du client
+	 * ordre pour ajouter le panel des murs dans l'ar�ne du client
 	 */
 	String AJOUTPANELMURS = "ajout panel murs";
 	/**
-	 * ordre pour ajouter un jLabel dans l'aréne du serveur (joueur, message, boule)
+	 * ordre pour ajouter un jLabel dans l'ar�ne du serveur (joueur, message, boule)
 	 */
 	String AJOUTJLABELJEU = "ajout jLabel jeu";
 	/**
-	 * ordre pour modifier le panel du jeu dans l'aeéne du client
+	 * ordre pour modifier le panel du jeu dans l'ae�ne du client
 	 */
 	String MODIFPANELJEU = "modif panel jeu";
 	/**
@@ -179,28 +247,20 @@ public interface Global {
 	 */
 	String TCHAT = "tchat";
 	/**
-	 * ordre pour ajouter une phrase dans l'aréne du serveur
+	 * ordre pour ajouter une phrase dans l'ar�ne du serveur
 	 */
 	String AJOUTPHRASE = "ajout phrase";
 	/**
-	 * ordre pour modifier le contenu du tchat dans l'aréne du client
+	 * ordre pour modifier le contenu du tchat dans l'ar�ne du client
 	 */
 	String MODIFTCHAT = "modif tchat";
 	/**
-	 * arrow button keycodes
-	 */
-	int LEFT = 37;
-	int UP = 40;
-	int RIGHT= 39;
-	int DOWN = 38;
-	/**
-	 * ordre pour l'envoi d'un commande par une touche pressée
+	 * ordre pour ex�cuter une action (d�placement, tire de boule)
 	 */
 	String ACTION = "action";
-	
 	/**
-	 * constante de déplacement
+	 * ordre pour jouer un son (dans l'ar�ne du client)
 	 */
-	int MOVE = 10;
+	String JOUESON = "joue son";
 
 }

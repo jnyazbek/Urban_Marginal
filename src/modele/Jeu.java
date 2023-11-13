@@ -4,42 +4,41 @@ import controleur.Controle;
 import outils.connexion.Connection;
 
 /**
- * Informations et mï¿½thodes communes aux jeux client et serveur
+ * Informations et méthodes communes aux jeux client et serveur
  *
  */
 public abstract class Jeu {
 	
 	/**
-	 * Instance de Controle, pour communiquer avec le contrï¿½leur
+	 * Instance de Controle, pour communiquer avec le contrôleur
 	 */
 	protected Controle controle;
 
 	/**
-	 * Rï¿½ception d'une connexion (pour communiquer avec un ordinateur distant)
-	 * @param connection TODO
+	 * Réception d'une connexion (pour communiquer avec un ordinateur distant)
+	 * @param connection objet connection pour la communication
 	 */
 	public abstract void connexion(Connection connection) ;
 	
 	/**
-	 * Rï¿½ception d'une information provenant de l'ordinateur distant
-	 * @param connection objet de connexion d'oï¿½ provient l'information
-	 * @param info information reï¿½ue
+	 * Réception d'une information provenant de l'ordinateur distant
+	 * @param connection objet de connexion d'où provient l'information
+	 * @param info information reçue
 	 */
 	public abstract void reception(Connection connection, Object info) ;
 	
 	/**
-	 * Dï¿½connexion de l'ordinateur distant
+	 * Déconnexion de l'ordinateur distant
 	 */
 	public abstract void deconnexion() ;
 	
 	/**
 	 * Envoi d'une information vers un ordinateur distant
-	 * @param connection objet de connexion pour accï¿½der ï¿½ l'ordinateur distant
-	 * @param info information ï¿½ envoyer
+	 * @param connection objet de connexion pour accéder à l'ordinateur distant
+	 * @param info information à envoyer
 	 */
 	public void envoi(Connection connection, Object info) {
 		this.controle.envoi(connection, info);
-		System.out.println("message envoyÃ© dans jeu");
 	}
 	
 }
