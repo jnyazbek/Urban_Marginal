@@ -186,5 +186,21 @@ public interface Global {
 	 * ordre pour modifier le contenu du tchat dans l'aréne du client
 	 */
 	String MODIFTCHAT = "modif tchat";
+	/**
+	 * arrow button keycodes
+	 */
+	int LEFT = 37;
+	int UP = 40;
+	int RIGHT= 39;
+	int DOWN = 38;
+	/**
+	 * ordre pour l'envoi d'un commande par une touche pressée
+	 */
+	String ACTION = "action";
+	
+	/**
+	 * constante de déplacement
+	 */
+	int MOVE = 10;
 
 }

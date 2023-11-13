@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 
 import javax.swing.JLabel;
@@ -19,6 +20,10 @@ public class JeuServeur extends Jeu implements Global {
 	 * Collection de murs
 	 */
 	private ArrayList<Mur> lesMurs = new ArrayList<Mur>() ;
+	
+	public ArrayList<Mur> getMurs() {
+		return lesMurs;
+	}
 	/**
 	 * Dictionnaire de joueurs indexé sur leur objet de connexion
 	 */
@@ -55,6 +60,10 @@ public class JeuServeur extends Jeu implements Global {
 			String phrase = infos[1];
 			phrase = this.lesJoueurs.get(connection).getPseudo()+" > "+phrase;
 			this.controle.evenementJeuServeur(AJOUTPHRASE, phrase);
+			break;
+		case ACTION: 
+			int keyCode = Integer.parseInt(infos[1]);
+			this.lesJoueurs.get(connection).action(keyCode);
 			break;
 		}
 	}
@@ -95,6 +104,10 @@ public class JeuServeur extends Jeu implements Global {
 			this.lesMurs.add(new Mur());
 			this.controle.evenementJeuServeur(AJOUTMUR, lesMurs.get(lesMurs.size()-1).getjLabel());
 		}
+	}
+
+	public Collection<Joueur> getJoueurs() {
+		return lesJoueurs.values();
 	}
 	
 }
