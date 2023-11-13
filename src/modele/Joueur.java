@@ -126,7 +126,6 @@ public class Joueur extends Objet implements Global {
 		// positionnement du personnage et affectation de la bonne image
 		super.jLabel.setBounds(posX, posY, LARGEURPERSO, HAUTEURPERSO);
 		String chemin = CHEMINPERSONNAGES+PERSO+this.numPerso+etat+etape+"d"+this.orientation+EXTFICHIERPERSO;
-System.out.println(chemin);
 		URL resource = getClass().getClassLoader().getResource(chemin);
 		super.jLabel.setIcon(new ImageIcon(resource));
 		// positionnement et remplissage du message sous le perosnnage
@@ -143,28 +142,30 @@ System.out.println(chemin);
 	 * @param lesJoueurs collection de joueurs
 	 */
 	public void action(Integer action, Collection lesJoueurs, Collection lesMurs) {
-		switch(action){
-		case KeyEvent.VK_LEFT :
-			orientation = GAUCHE; 
-			posX = deplace(posX, action, -PAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
-			break;
-		case KeyEvent.VK_RIGHT :
-			orientation = DROITE; 
-			posX = deplace(posX, action, PAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
-			break;
-		case KeyEvent.VK_UP :
-			posY = deplace(posY, action, -PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs) ;
-			break;
-		case KeyEvent.VK_DOWN :
-			posY = deplace(posY,  action, PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs) ;
-			break;	
-		case KeyEvent.VK_SPACE :
-			if(!this.boule.getjLabel().isVisible()) {
-				this.boule.tireBoule(this, lesMurs);
+		if(!this.estMort()) {
+			switch(action){
+			case KeyEvent.VK_LEFT :
+				orientation = GAUCHE; 
+				posX = deplace(posX, action, -PAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+				break;
+			case KeyEvent.VK_RIGHT :
+				orientation = DROITE; 
+				posX = deplace(posX, action, PAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+				break;
+			case KeyEvent.VK_UP :
+				posY = deplace(posY, action, -PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs) ;
+				break;
+			case KeyEvent.VK_DOWN :
+				posY = deplace(posY,  action, PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs) ;
+				break;	
+			case KeyEvent.VK_SPACE :
+				if(!this.boule.getjLabel().isVisible()) {
+					this.boule.tireBoule(this, lesMurs);
+				}
+				break;
 			}
-			break;
+			this.affiche(MARCHE, this.etape);
 		}
-		this.affiche(MARCHE, this.etape);
 	}
 
 	/**
@@ -224,9 +225,15 @@ System.out.println(chemin);
 	}
 	
 	/**
-	 * Le joueur se déconnecte et disparait
+	 * Le joueur disparait (ainsi que son message et sa boule)
 	 */
 	public void departJoueur() {
+		if(super.jLabel != null) {
+			super.jLabel.setVisible(false);
+			this.message.setVisible(false);
+			this.boule.getjLabel().setVisible(false);
+			this.jeuServeur.envoiJeuATous();
+		}
 	}
 	
 }
